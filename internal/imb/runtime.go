@@ -117,7 +117,12 @@ func (p *Piece) Label() string {
 
 func ParsePieceMeta(b []byte) (map[string]string, error) {
 	var m map[string]string
-	_ = json.Unmarshal(b, &m)
+	if len(b) == 0 {
+		return nil, errors.New("empty piece meta")
+	}
+	if err := json.Unmarshal(b, &m); err != nil {
+		return nil, err
+	}
 	return m, nil
 }
 
